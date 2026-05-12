@@ -1,0 +1,44 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.12
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v2.1.0
+    hooks:
+      - id: mypy
+        args: [--strict, --ignore-missing-imports]
+        additional_dependencies: [pytest]   # type info for the test suite
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.9.4
+    hooks:
+      - id: bandit
+        args: [-r, -ll, --skip, B101]   # skip assert-used in tests
+  - repo: https://github.com/pypa/pip-audit
+    rev: v2.10.0
+    hooks:
+      - id: pip-audit
+        args: [--strict]
+        stages: [pre-push]    # defer until project has a manifest worth auditing
+        # Ship a patched pip into the hook's own venv; the virtualenv-bundled
+        # pip (26.0.1) otherwise trips pip-audit's --strict on its own CVEs.
+        additional_dependencies: [pip>=26.1.1]
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/semgrep/semgrep
+    rev: v1.162.0
+    hooks:
+      - id: semgrep
+        args: [--config=p/python, --config=p/owasp-top-ten, --error]
+  - repo: local
+    hooks:
+      - id: pytest-on-changed
+        name: pytest on changed modules
+        entry: bash -c 'uv run pytest --cov --cov-fail-under=85 -x'
+        language: system
+        pass_filenames: false
+        stages: [pre-push]    # full suite on push, not every commit

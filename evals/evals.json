@@ -1,0 +1,97 @@
+{
+  "skill_name": "scryfall-search",
+  "description": "Natural-language prompts for exercising the scryfall-search skill. Each eval lists substrings a correct Scryfall query should contain. Operator order and case do not matter; these are guidance, not strict assertions.",
+  "evals": [
+    {
+      "id": 1,
+      "difficulty": "easy",
+      "prompt": "Find me all the blue instants.",
+      "expected_query_contains": ["c:u", "t:instant"],
+      "notes": "Two direct filters, AND-combined."
+    },
+    {
+      "id": 2,
+      "difficulty": "easy",
+      "prompt": "What mythic rare planeswalkers are there?",
+      "expected_query_contains": ["r:mythic", "t:planeswalker"],
+      "notes": "Rarity name passed directly to r:."
+    },
+    {
+      "id": 3,
+      "difficulty": "easy",
+      "prompt": "List goblin cards that aren't creatures.",
+      "expected_query_contains": ["t:goblin", "-t:creature"],
+      "notes": "Negation with a leading hyphen."
+    },
+    {
+      "id": 4,
+      "difficulty": "medium",
+      "prompt": "Red dragons with flying that cost 5 or less.",
+      "expected_query_contains": ["t:dragon", "c:r", "flying", "mv<=5"],
+      "notes": "'Cost 5 or less' is mana value. Flying via o:flying or kw:flying."
+    },
+    {
+      "id": 5,
+      "difficulty": "medium",
+      "prompt": "White creatures with power 4 or greater that are legal in Standard.",
+      "expected_query_contains": ["c:w", "t:creature", "pow>=4", "f:standard"],
+      "notes": "Numeric comparison on pow; f: for format legality."
+    },
+    {
+      "id": 6,
+      "difficulty": "medium",
+      "prompt": "Two-color artifact creatures that cost under two dollars.",
+      "expected_query_contains": ["t:artifact", "t:creature", "c=2", "usd<2"],
+      "notes": "'Two-color' is c=2 (exact count); 'under $2' is usd<2."
+    },
+    {
+      "id": 7,
+      "difficulty": "medium",
+      "prompt": "Find me all the legendary creatures with deathtouch that cost 3 or less.",
+      "expected_query_contains": ["t:legendary", "t:creature", "deathtouch", "mv<=3"],
+      "notes": "Deathtouch via o:deathtouch or kw:deathtouch."
+    },
+    {
+      "id": 8,
+      "difficulty": "hard",
+      "prompt": "Cards I can play in a Golgari commander deck.",
+      "expected_query_contains": ["id"],
+      "notes": "Commander question -> color identity (id<=bg or id<=golgari), not color."
+    },
+    {
+      "id": 9,
+      "difficulty": "hard",
+      "prompt": "Cheap red burn spells legal in Modern.",
+      "expected_query_contains": ["c:r", "damage", "f:modern"],
+      "notes": "'Burn' -> oracle text 'damage'. 'Cheap' is subjective; a mv<=2 or mv<=3 threshold is reasonable and should be stated to the user."
+    },
+    {
+      "id": 10,
+      "difficulty": "hard",
+      "prompt": "Show me board wipes.",
+      "expected_query_contains": ["destroy all"],
+      "notes": "'Board wipe' / 'wrath' has no operator; match o:\"destroy all\". Exile-based or damage-based wipes may be missed - acceptable for a first pass."
+    },
+    {
+      "id": 11,
+      "difficulty": "hard",
+      "prompt": "Creatures with enters-the-battlefield effects.",
+      "expected_query_contains": ["t:creature", "enters"],
+      "notes": "ETB -> oracle phrase 'when ~ enters'. The ~ placeholder stands for the card name."
+    },
+    {
+      "id": 12,
+      "difficulty": "hard",
+      "prompt": "Find tutors - cards that search your library.",
+      "expected_query_contains": ["search your library"],
+      "notes": "'Tutor' -> o:\"search your library\". Excluding lands (-t:land) avoids fetchlands and basics."
+    },
+    {
+      "id": 13,
+      "difficulty": "hard",
+      "prompt": "Find green or colorless creatures that grant haste.",
+      "expected_query_contains": ["id<=g", "t:creature", "haste"],
+      "notes": "'Green or colorless' is a card pool -> color IDENTITY (id<=g), not printed color (c<=g). c: matches Devoid Eldrazi, which are printed colorless but carry a colored color identity and can't go in a green/colorless deck. id<=g correctly excludes them."
+    }
+  ]
+}
