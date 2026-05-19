@@ -1,8 +1,8 @@
 # scrytalk — Scryfall Search Skill
 
 An agentic [Skill](https://www.anthropic.com/news/skills) for *Magic: The 
-Gathering* card search. Lets an AI agent — such as Claude Code or 
-opencode — search the [Scryfall](https://scryfall.com) card database from
+Gathering* card search. Lets an AI agent such as Claude Code or 
+opencode search the [Scryfall](https://scryfall.com) card database from
 plain-English prompts. The user describes the cards they want; the agent
 translates that into a Scryfall query, runs a bundled helper script to run the
 query, and returns both the query and the raw API results.
@@ -21,7 +21,7 @@ query, and returns both the query and the raw API results.
 
 ## Installation
 
-No `pip install` is needed — the helper uses only the Python standard library
+No `pip install` is needed. The helper uses only the Python standard library
 (Python 3.10+).
 
 Both Claude Code and opencode discover skills in `~/.claude/skills/`. Clone the
